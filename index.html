@@ -1119,151 +1119,71 @@
   .about-hero-title em { font-style: italic; color: rgba(255,255,255,0.45); }
   .about-hero-sub { font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; line-height: 1.8; }
 
-  /* Our Mission */
-  .mission-section { background: var(--white); padding: 100px 0; }
-  .mission-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
-  .mission-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    margin-top: 64px;
-  }
-  .mission-visual {
-    background: var(--black);
-    aspect-ratio: 4/5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .mission-visual-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 120px;
-    font-weight: 300;
-    color: rgba(255,255,255,0.05);
-    pointer-events: none;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    line-height: 1;
-  }
-  .mission-text {}
-  .mission-text .section-eyebrow { justify-content: flex-start; }
-  .mission-text .section-eyebrow::before { display: none; }
-  .mission-text .section-title { text-align: left; font-size: 48px; }
-  .mission-text .section-desc { text-align: left; margin: 16px 0 0; max-width: none; }
-  .mission-pillars {
-    margin-top: 40px;
+
+  /* ─── ABOUT CARDS ─── */
+  .about-card {
+    background: var(--white);
+    padding: 52px 44px;
     display: flex;
     flex-direction: column;
     gap: 0;
-    border-top: 1px solid var(--border);
   }
-  .mission-pillar {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .mission-pillar-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px;
-    color: var(--gray-light);
-    flex-shrink: 0;
-    width: 32px;
-    line-height: 1;
-    margin-top: 2px;
-  }
-  .mission-pillar-content {}
-  .mission-pillar-title { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); margin-bottom: 5px; }
-  .mission-pillar-text { font-size: 12px; color: var(--gray); line-height: 1.7; letter-spacing: 0.03em; }
-
-  /* Sustainability */
-  .sustainability-section { background: var(--near-black); padding: 100px 40px; overflow: hidden; position: relative; }
-  .sustainability-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
-  .sustainability-header { text-align: center; margin-bottom: 64px; }
-  .sustainability-header .section-eyebrow { color: rgba(255,255,255,0.4); }
-  .sustainability-header .section-eyebrow::before,
-  .sustainability-header .section-eyebrow::after { background: rgba(255,255,255,0.12); }
-  .sustainability-header .section-title { color: var(--white); }
-  .sustainability-header .section-title em { color: rgba(255,255,255,0.4); }
-  .sustainability-header .section-desc { color: rgba(255,255,255,0.4); }
-  .sustainability-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: rgba(255,255,255,0.04);
-  }
-  .sustainability-card {
-    background: rgba(255,255,255,0.03);
-    padding: 48px 40px;
-    transition: background 0.3s;
-  }
-  .sustainability-card:hover { background: rgba(255,255,255,0.07); }
-  .sustain-icon {
+  .about-card-icon {
     width: 48px; height: 48px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 28px;
+    color: var(--black);
   }
-  .sustain-icon svg { width: 22px; height: 22px; stroke: rgba(255,255,255,0.6); fill: none; stroke-width: 1.5; }
-  .sustain-title {
+  .about-card-icon svg { width: 20px; height: 20px; }
+  .about-card-label {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
-    color: var(--white);
-    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--gray-light);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
   }
-  .sustain-text { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.8; letter-spacing: 0.04em; }
-  .sustain-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-  .sustain-list li {
+  .about-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--black);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .about-card-text {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin-bottom: 24px;
+  }
+  .about-card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+  .about-card-list li {
     font-size: 11px;
-    letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.08em;
+    color: var(--li-color, var(--gray));
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .sustain-list li::before { content: ''; width: 14px; height: 1px; background: rgba(255,255,255,0.3); flex-shrink: 0; }
-
-  /* Community */
-  .community-section { background: var(--white); padding: 100px 0; }
-  .community-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
-  .community-intro { text-align: center; margin-bottom: 64px; }
-  .community-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: var(--border);
+  .about-card-list li::before {
+    content: '';
+    width: 14px; height: 1px;
+    background: var(--line-color, var(--border));
+    flex-shrink: 0;
   }
-  .community-card {
-    background: var(--white);
-    padding: 48px 40px;
-    transition: background 0.2s;
-    cursor: default;
-  }
-  .community-card:hover { background: var(--off-white); }
-  .community-icon { font-size: 36px; margin-bottom: 20px; }
-  .community-card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--black);
-    margin-bottom: 12px;
-  }
-  .community-card-text { font-size: 13px; color: var(--gray); line-height: 1.8; letter-spacing: 0.03em; }
-  .community-cta {
-    text-align: center;
-    margin-top: 60px;
-  }
-  .community-cta-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    color: var(--black);
-    margin-bottom: 24px;
-    font-style: italic;
+  @media (max-width: 1024px) {
+    .about-card { padding: 40px 32px; }
+    div[style*="grid-template-columns: repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
   }
 
   /* ─── POLICIES ─── */
@@ -2399,133 +2319,60 @@
     </div>
   </div>
 
-  <!-- OUR MISSION -->
-  <div class="mission-section">
-    <div class="mission-inner">
-      <div class="mission-grid">
-        <div class="mission-visual reveal">
-          <div class="mission-visual-text">M</div>
-          <svg width="200" height="360" viewBox="0 0 200 360" fill="none" opacity="0.5">
-            <ellipse cx="100" cy="50" rx="30" ry="36" fill="white"/>
-            <path d="M35 100 Q12 170 8 320 Q55 336 100 336 Q145 336 192 320 Q188 170 165 100 Q136 116 100 119 Q64 116 35 100Z" fill="white"/>
-            <path d="M35 104 Q8 132 4 200 Q16 207 35 195 Q43 158 56 130Z" fill="rgba(255,255,255,0.6)"/>
-            <path d="M165 104 Q192 132 196 200 Q184 207 165 195 Q157 158 144 130Z" fill="rgba(255,255,255,0.6)"/>
-            <path d="M57 50 Q46 30 46 12 Q68 0 100 0 Q132 0 154 12 Q154 30 143 50 Q126 68 100 72 Q74 68 57 50Z" fill="white"/>
-          </svg>
-        </div>
-        <div class="mission-text reveal reveal-delay-2">
-          <div class="section-eyebrow" style="justify-content:flex-start;">
-            <span style="width:30px;height:1px;background:var(--border);display:block;"></span>
-            Our Mission
-          </div>
-          <h2 class="section-title" style="text-align:left;font-size:48px;">Fashion with <em>Purpose</em></h2>
-          <p class="section-desc" style="text-align:left;margin:16px 0 0;max-width:none;">
-            At Bloom Again, our mission is to create fashion that honours identity, celebrates every body, and never forces a choice between style and values. We believe modest fashion is not a limitation — it is a form of expression.
-          </p>
-          <div class="mission-pillars">
-            <div class="mission-pillar">
-              <div class="mission-pillar-num">01</div>
-              <div class="mission-pillar-content">
-                <div class="mission-pillar-title">Inclusivity First</div>
-                <div class="mission-pillar-text">Every collection runs from XS to XXL. Fashion should never exclude — it should embrace.</div>
-              </div>
-            </div>
-            <div class="mission-pillar">
-              <div class="mission-pillar-num">02</div>
-              <div class="mission-pillar-content">
-                <div class="mission-pillar-title">Intentional Design</div>
-                <div class="mission-pillar-text">Each piece is designed with purpose — from the fabric choice to the silhouette. Nothing is accidental.</div>
-              </div>
-            </div>
-            <div class="mission-pillar">
-              <div class="mission-pillar-num">03</div>
-              <div class="mission-pillar-content">
-                <div class="mission-pillar-title">Community Driven</div>
-                <div class="mission-pillar-text">We grow alongside our customers. Their feedback, their stories, and their needs shape everything we create.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- MISSION · SUSTAINABILITY · COMMUNITY CARDS -->
+  <div style="background: var(--white); padding: 80px 40px;">
+    <div style="max-width:1400px; margin:0 auto;">
+      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:2px; background:var(--border);">
 
-  <!-- SUSTAINABILITY -->
-  <div class="sustainability-section">
-    <div class="sustainability-inner">
-      <div class="sustainability-header reveal">
-        <div class="section-eyebrow">Our Responsibility</div>
-        <h2 class="section-title">Built to <em>Last</em></h2>
-        <p class="section-desc">Fashion without a conscience is just noise. We're committed to doing better — for people and the planet.</p>
-      </div>
-      <div class="sustainability-grid">
-        <div class="sustainability-card reveal reveal-delay-1">
-          <div class="sustain-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+        <!-- Mission -->
+        <div class="about-card reveal reveal-delay-1">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           </div>
-          <div class="sustain-title">Longevity Over Fast Fashion</div>
-          <div class="sustain-text">We design for seasons, not trends. Every Bloom Again piece is made to be worn for years, not weeks.</div>
-          <ul class="sustain-list">
+          <div class="about-card-label">01</div>
+          <div class="about-card-title">Our Mission</div>
+          <p class="about-card-text">To create fashion that honours identity, celebrates every body, and never forces a choice between style and values. Modest fashion is not a limitation — it is a form of expression.</p>
+          <ul class="about-card-list">
+            <li>Inclusivity first — XS to XXL always</li>
+            <li>Intentional design in every stitch</li>
+            <li>Fashion that empowers, never excludes</li>
+          </ul>
+        </div>
+
+        <!-- Sustainability -->
+        <div class="about-card reveal reveal-delay-2" style="background:var(--near-black);">
+          <div class="about-card-icon" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          </div>
+          <div class="about-card-label" style="color:rgba(255,255,255,0.25);">02</div>
+          <div class="about-card-title" style="color:var(--white);">Sustainability</div>
+          <p class="about-card-text" style="color:rgba(255,255,255,0.45);">We design for seasons, not trends. Every piece is built to last — from responsible sourcing to mindful packaging. Fashion without conscience is just noise.</p>
+          <ul class="about-card-list" style="--li-color:rgba(255,255,255,0.35);--line-color:rgba(255,255,255,0.2);">
             <li>Durable, premium-grade fabrics</li>
-            <li>Timeless silhouettes and cuts</li>
-            <li>Quality checked before dispatch</li>
+            <li>Ethically sourced & produced</li>
+            <li>Minimal, recyclable packaging</li>
           </ul>
         </div>
-        <div class="sustainability-card reveal reveal-delay-2">
-          <div class="sustain-icon">
-            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          </div>
-          <div class="sustain-title">Responsible Sourcing</div>
-          <div class="sustain-text">We work only with suppliers who meet our standards for fabric quality, ethical production, and fair treatment of workers.</div>
-          <ul class="sustain-list">
-            <li>Vetted fabric suppliers</li>
-            <li>Ethically produced garments</li>
-            <li>No exploitative supply chains</li>
-          </ul>
-        </div>
-        <div class="sustainability-card reveal reveal-delay-3">
-          <div class="sustain-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          </div>
-          <div class="sustain-title">Mindful Packaging</div>
-          <div class="sustain-text">From the moment your order is placed to the moment it arrives, we think about our footprint — minimal, considered packaging that reflects our values.</div>
-          <ul class="sustain-list">
-            <li>Reduced plastic packaging</li>
-            <li>Recyclable materials where possible</li>
-            <li>Compact, efficient shipping</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- COMMUNITY -->
-  <div class="community-section">
-    <div class="community-inner">
-      <div class="community-intro reveal">
-        <div class="section-eyebrow">Our People</div>
-        <h2 class="section-title">The Bloom Again <em>Community</em></h2>
-        <p class="section-desc">We are nothing without the people who wear our clothes. From London to Lagos to Accra — this is your brand too.</p>
+        <!-- Community -->
+        <div class="about-card reveal reveal-delay-3">
+          <div class="about-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="about-card-label">03</div>
+          <div class="about-card-title">Community</div>
+          <p class="about-card-text">We are nothing without the people who wear our clothes. From London to Lagos to Accra — this is your brand too. Your stories and feedback shape everything we create.</p>
+          <ul class="about-card-list">
+            <li>Serving England, Ghana & Nigeria</li>
+            <li>Every identity celebrated here</li>
+            <li>Your feedback shapes our collections</li>
+          </ul>
+        </div>
+
       </div>
-      <div class="community-grid">
-        <div class="community-card reveal reveal-delay-1">
-          <div class="community-icon">🌍</div>
-          <div class="community-card-title">Global Roots</div>
-          <div class="community-card-text">Bloom Again was born in England but carries the spirit of three countries. We are proud to serve communities in the UK, Ghana, and Nigeria — with more destinations coming soon.</div>
-        </div>
-        <div class="community-card reveal reveal-delay-2">
-          <div class="community-icon">🤝</div>
-          <div class="community-card-title">You Shape Us</div>
-          <div class="community-card-text">Every product we create, every collection we launch — it's guided by the voices of our community. We listen, we evolve, and we grow together. Your feedback is our compass.</div>
-        </div>
-        <div class="community-card reveal reveal-delay-3">
-          <div class="community-icon">✨</div>
-          <div class="community-card-title">Celebrating Identity</div>
-          <div class="community-card-text">Whether you dress modestly by faith, by preference, or by style — you belong here. Bloom Again is a space where every identity is honoured and every woman and man can find themselves.</div>
-        </div>
-      </div>
-      <div class="community-cta reveal">
-        <p class="community-cta-text">"When you bloom again, we bloom with you."</p>
+
+      <div style="text-align:center; margin-top:56px;" class="reveal">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;color:var(--gray-dark);margin-bottom:24px;">"When you bloom again, we bloom with you."</p>
         <a href="#contact" class="btn-dark">Get In Touch</a>
       </div>
     </div>
