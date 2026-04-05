@@ -1443,26 +1443,121 @@
     .nura-grid, .bai-grid { grid-template-columns: repeat(2, 1fr); }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
     .collection-inner, .hoa-inner, .brand-story-inner,
-    .about-home-grid, .mission-grid { grid-template-columns: 1fr; }
-    .collection-text, .hoa-text, .brand-story-text, .mission-text { padding: 60px 40px; }
+    .about-home-grid { grid-template-columns: 1fr; }
+    .collection-text, .hoa-text, .brand-story-text { padding: 60px 40px; }
     .collection-visual, .hoa-visual, .brand-story-visual { min-height: 400px; }
-    .policies-grid, .global-grid, .reviews-grid,
-    .sustainability-grid, .community-grid { grid-template-columns: 1fr; }
+    .policies-grid, .global-grid, .reviews-grid { grid-template-columns: 1fr; }
   }
+
   @media (max-width: 768px) {
-    .top-bar { padding: 8px 20px; font-size: 10px; }
+    /* Top bar */
+    .top-bar { padding: 8px 16px; font-size: 9px; }
     .top-bar .email { display: none; }
-    .nav-inner { padding: 0 20px; }
+
+    /* Nav */
+    .nav-inner { padding: 0 16px; height: 60px; }
     .nav-links { display: none; }
     .mobile-menu-btn { display: flex; }
+    .logo-main { font-size: 20px; }
+
+    /* Hero — stack panels vertically on mobile */
+    .hero { height: auto; min-height: 100svh; }
+    .hero-panels { grid-template-columns: 1fr; grid-template-rows: repeat(3, 33.33svh); }
+    .hero-panel + .hero-panel { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
+    .hero-content {
+      bottom: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 24px;
+    }
+    .hero-headline { font-size: clamp(36px, 10vw, 56px); }
+    .hero-sub { font-size: 13px; max-width: 100%; }
+    .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
+    .hero-actions a { width: 220px; text-align: center; }
+    .slide-dots { bottom: 20px; }
+
+    /* Sections */
     .section, .products-section, .promo-section,
-    .nura-subsection, .bai-subsection { padding-left: 20px; padding-right: 20px; }
-    .hero-content { padding: 0 20px; }
+    .nura-subsection, .bai-subsection,
+    .new-drops-inner, .bestsellers-inner,
+    .reviews-inner, .about-home-inner,
+    .mission-inner, .sustainability-inner,
+    .community-inner, .global-inner,
+    .policies-section { padding-left: 16px; padding-right: 16px; }
+    .section { padding-top: 60px; padding-bottom: 60px; }
+
+    /* Grids → single column */
+    .category-grid, .products-grid, .new-drops-grid,
+    .bestsellers-grid, .nura-grid, .bai-grid { grid-template-columns: 1fr; }
+    .promo-items { flex-direction: column; align-items: center; }
+    .promo-item { width: 100%; max-width: 320px; }
+
+    /* Split sections */
+    .collection-inner, .hoa-inner, .brand-story-inner,
+    .about-home-grid { grid-template-columns: 1fr; }
+    .collection-text, .hoa-text, .brand-story-text { padding: 48px 24px; }
+    .collection-visual, .hoa-visual, .brand-story-visual { min-height: 280px; }
+    .collection-text .section-title,
+    .hoa-text .section-title,
+    .brand-story-text .section-title { font-size: 36px; }
+
+    /* About cards */
+    div[style*="grid-template-columns: repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+    .about-card { padding: 36px 24px; }
+
+    /* Policies / global / reviews */
+    .policies-grid, .global-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .policy-card, .global-card, .review-card { padding: 32px 24px; }
+
+    /* About home stats */
+    .about-home-stats { grid-template-columns: repeat(3,1fr); }
+
+    /* Shop section */
+    .shop-section-header { padding: 60px 16px 48px; }
+    .subsection-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+    /* Footer */
     .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-    .hero { height: 80vh; }
-    .about-home-stats { grid-template-columns: 1fr; }
-    .hoa-inner { grid-template-columns: 1fr; }
+    footer { padding: 48px 16px 24px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+    /* Newsletter */
+    .newsletter-section { padding: 60px 16px; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-input { border-right: 1px solid var(--border); border-bottom: none; }
+    .newsletter-btn { padding: 14px; }
+
+    /* Contact */
+    .contact-section { padding: 60px 16px; }
+    .social-row { gap: 8px; }
+
+    /* Scroll hint */
+    .hero-scroll-hint { display: none; }
   }
+
+  /* Mobile menu open state */
+  nav.menu-open .nav-links-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    z-index: 200;
+    padding: 8px 0;
+  }
+  .nav-links-mobile a {
+    display: block;
+    padding: 14px 24px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links-mobile a:last-child { border-bottom: none; }
 </style>
 </head>
 <body>
@@ -1504,8 +1599,17 @@
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
       </div>
-      <div class="mobile-menu-btn"><span></span><span></span><span></span></div>
+      <div class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></div>
     </div>
+  </div>
+  <!-- Mobile dropdown -->
+  <div class="nav-links-mobile" id="mobileMenu" style="display:none;">
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#shop">Nura Collection</a>
+    <a href="#shop">Inclusive</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
   </div>
 </nav>
 
@@ -2676,6 +2780,22 @@
 
     setInterval(() => goTo((current + 1) % sets), 5000);
   })();
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn.addEventListener('click', () => {
+    const open = mobileMenu.style.display === 'flex';
+    mobileMenu.style.display = open ? 'none' : 'flex';
+    mobileMenuBtn.classList.toggle('active', !open);
+  });
+  // Close menu when a link is tapped
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.style.display = 'none';
+      mobileMenuBtn.classList.remove('active');
+    });
+  });
 
   // Sticky nav shadow
   const nav = document.getElementById('navbar');
