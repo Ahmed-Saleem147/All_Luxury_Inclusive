@@ -153,7 +153,7 @@
 
   /* ─── HERO ─── */
   .hero {
-    height: 92vh;
+    height: 100vh;
     min-height: 600px;
     position: relative;
     overflow: hidden;
@@ -161,14 +161,76 @@
     align-items: center;
     background: var(--black);
   }
-  .hero-grid-lines {
+
+  /* 3-panel slideshow */
+  .hero-panels {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 80px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    z-index: 0;
   }
+  .hero-panel {
+    position: relative;
+    overflow: hidden;
+    background: var(--black);
+  }
+  /* thin divider lines between panels */
+  .hero-panel + .hero-panel {
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* full-width gradient overlay for text legibility */
+  .hero-full-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15) 0%,
+      rgba(0,0,0,0.55) 40%,
+      rgba(0,0,0,0.55) 70%,
+      rgba(0,0,0,0.2) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Slide dots */
+  .slide-dots {
+    position: absolute;
+    bottom: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .slide-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+  }
+  .slide-dot.active {
+    background: white;
+    width: 24px;
+    border-radius: 3px;
+  }
+
+  /* Panel image crossfade */
+  .hero-panel .img-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero-panel .img-layer.active { opacity: 1; }
   .hero-figure {
     position: absolute;
     right: 8%;
@@ -181,33 +243,40 @@
 
   .hero-circle {
     position: absolute;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 50%;
+    z-index: 2;
   }
   .hero-circle-1 { width: 320px; height: 320px; bottom: 10%; left: 5%; }
   .hero-circle-2 { width: 180px; height: 180px; bottom: 22%; left: 12%; }
 
   .hero-content {
-    position: relative;
+    position: absolute;
     z-index: 10;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
+    bottom: 18%;
+    left: 0;
+    right: 0;
+    padding: 0 60px;
     width: 100%;
+    text-align: center;
+  }
+  .hero-actions {
+    justify-content: center;
   }
   .hero-eyebrow {
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.6);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 14px;
     opacity: 0;
     animation: fadeUp 0.9s 0.2s forwards;
   }
-  .hero-eyebrow::before {
+  .hero-eyebrow::before, .hero-eyebrow::after {
     content: '';
     width: 40px; height: 1px;
     background: rgba(255,255,255,0.4);
@@ -228,10 +297,10 @@
   .hero-sub {
     font-size: 14px;
     letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.45);
-    max-width: 360px;
+    color: rgba(255,255,255,0.55);
+    max-width: 500px;
     line-height: 1.8;
-    margin-bottom: 40px;
+    margin: 0 auto 40px;
     opacity: 0;
     animation: fadeUp 0.9s 0.6s forwards;
   }
@@ -1446,25 +1515,19 @@
 <section id="home">
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-grid-lines"></div>
-  <div class="hero-circle hero-circle-1"></div>
-  <div class="hero-circle hero-circle-2"></div>
+<div class="hero" id="hero">
 
-  <div class="hero-figure">
-    <svg viewBox="0 0 300 700" xmlns="http://www.w3.org/2000/svg" opacity="0.12">
-      <ellipse cx="150" cy="80" rx="38" ry="42" fill="white"/>
-      <path d="M90 140 Q60 280 40 500 Q60 560 150 570 Q240 560 260 500 Q240 280 210 140 Q180 155 150 158 Q120 155 90 140Z" fill="white"/>
-      <path d="M90 160 Q40 200 20 280 Q30 290 60 275 Q80 220 100 190Z" fill="white"/>
-      <path d="M210 160 Q260 200 280 280 Q270 290 240 275 Q220 220 200 190Z" fill="white"/>
-      <path d="M108 85 Q90 70 85 50 Q100 20 150 15 Q200 20 215 50 Q210 70 192 85 Q170 105 150 108 Q130 105 108 85Z" fill="white"/>
-    </svg>
+  <!-- 3 panel slideshow -->
+  <div class="hero-panels">
+    <div class="hero-panel" id="panel0"></div>
+    <div class="hero-panel" id="panel1"></div>
+    <div class="hero-panel" id="panel2"></div>
   </div>
 
-  <div style="position:absolute; top:30px; right:40px; writing-mode: vertical-rl; font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.12); z-index: 5;">
-    Nura · Bloom Again · 2025
-  </div>
+  <!-- Full-width dark gradient over all panels for text legibility -->
+  <div class="hero-full-overlay"></div>
 
+  <!-- Text spans full hero width -->
   <div class="hero-content">
     <div class="hero-eyebrow">New Collection</div>
     <h1 class="hero-headline">Discover<br>Your <em>Style</em><br>Today</h1>
@@ -1474,6 +1537,9 @@
       <a href="#about" class="btn-white-outline">Our Story</a>
     </div>
   </div>
+
+  <!-- Slide indicators -->
+  <div class="slide-dots" id="slideDots"></div>
 
   <div class="hero-scroll-hint">
     <div class="scroll-line"></div>
@@ -2559,6 +2625,58 @@
 </footer>
 
 <script>
+  // 3-panel hero slideshow
+  (function initPanelSlideshow() {
+    const images = [
+      'abaya-plum.jfif',
+      'kashmiri-thobe.jfif',
+      'emirati-thobe.jfif',
+      'look-1.jfif',
+      'look-2.jfif',
+      'luxury-dubai-abaya.jfif',
+      'baraka-set.jfif'
+    ];
+
+    const panels = [
+      document.getElementById('panel0'),
+      document.getElementById('panel1'),
+      document.getElementById('panel2')
+    ];
+    const dotsContainer = document.getElementById('slideDots');
+    const sets = Math.ceil(images.length / 3);
+    let current = 0;
+
+    // Build crossfade layers inside each panel for each set
+    const layersByPanel = panels.map((panel, p) =>
+      Array.from({ length: sets }, (_, s) => {
+        const layer = document.createElement('div');
+        layer.className = 'img-layer' + (s === 0 ? ' active' : '');
+        layer.style.backgroundImage = `url('${images[(s * 3 + p) % images.length]}')`;
+        panel.appendChild(layer);
+        return layer;
+      })
+    );
+
+    // Dots — one per set
+    const dots = Array.from({ length: sets }, (_, s) => {
+      const btn = document.createElement('button');
+      btn.className = 'slide-dot' + (s === 0 ? ' active' : '');
+      btn.addEventListener('click', () => goTo(s));
+      dotsContainer.appendChild(btn);
+      return btn;
+    });
+
+    function goTo(s) {
+      panels.forEach((_, p) => layersByPanel[p][current].classList.remove('active'));
+      dots[current].classList.remove('active');
+      current = s;
+      panels.forEach((_, p) => layersByPanel[p][current].classList.add('active'));
+      dots[current].classList.add('active');
+    }
+
+    setInterval(() => goTo((current + 1) % sets), 5000);
+  })();
+
   // Sticky nav shadow
   const nav = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
