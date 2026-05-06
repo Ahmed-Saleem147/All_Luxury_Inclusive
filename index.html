@@ -8,23 +8,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --white: #FFFFFF;
-    --off-white: #F8F8F8;
-    --light: #F2F2F2;
-    --border: #E0E0E0;
-    --gray-light: #CCCCCC;
-    --gray: #888888;
-    --gray-dark: #444444;
-    --near-black: #1A1A1A;
-    --black: #0A0A0A;
-    /* legacy mappings so older CSS still works */
-    --beige: #F2F2F2;
-    --taupe: #CCCCCC;
-    --gold: #0A0A0A;
-    --gold-light: #444444;
-    --cream: #F5F5F5;
-    --dark-brown: #1A1A1A;
-    --mid-brown: #666666;
+    --white: #FAF7F3;        /* warm cream white */
+    --off-white: #F4EFE9;   /* soft beige */
+    --light: #EDE6DE;        /* warm linen */
+    --border: #D8CEBF;       /* warm sand border */
+    --gray-light: #C4B8A8;  /* warm taupe */
+    --gray: #9A8C7E;         /* warm mid tone */
+    --gray-dark: #5C5045;   /* warm dark brown */
+    --near-black: #2C2018;  /* deep warm brown */
+    --black: #1A120A;       /* warm near-black */
+    --accent: #C4A882;      /* warm caramel accent */
+    /* legacy mappings */
+    --beige: #EDE6DE;
+    --taupe: #C4B8A8;
+    --gold: #C4A882;
+    --gold-light: #D4BC9A;
+    --cream: #F4EFE9;
+    --dark-brown: #2C2018;
+    --mid-brown: #7A6E62;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -464,7 +465,7 @@
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--gray);
+    color: var(--accent);
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -474,7 +475,7 @@
   .section-eyebrow::before, .section-eyebrow::after {
     content: '';
     width: 30px; height: 1px;
-    background: var(--gray-light);
+    background: var(--accent);
   }
   .section-title {
     font-family: 'Cormorant Garamond', serif;
@@ -1683,15 +1684,7 @@
     </div>
     <div class="category-grid">
       <div class="category-card reveal reveal-delay-1">
-        <div class="category-card-bg cat-bg-1" style="display:flex;align-items:center;justify-content:center;">
-          <svg width="120" height="200" viewBox="0 0 120 200" fill="none" opacity="0.35">
-            <ellipse cx="60" cy="35" rx="18" ry="20" fill="white"/>
-            <path d="M28 60 Q15 100 10 170 Q40 180 60 180 Q80 180 110 170 Q105 100 92 60 Q76 70 60 72 Q44 70 28 60Z" fill="white"/>
-            <path d="M28 65 Q10 85 5 120 Q15 125 28 115 Q32 90 42 78Z" fill="white"/>
-            <path d="M92 65 Q110 85 115 120 Q105 125 92 115 Q88 90 78 78Z" fill="white"/>
-            <path d="M40 35 Q35 25 35 15 Q45 5 60 4 Q75 5 85 15 Q85 25 80 35 Q70 45 60 46 Q50 45 40 35Z" fill="white"/>
-          </svg>
-        </div>
+        <div class="category-card-bg" style="background-image:url('abaya-springtime.jfif');background-size:cover;background-position:center top;"></div>
         <div class="category-card-overlay"></div>
         <div class="category-card-content">
           <div class="category-card-label">Nura Collection</div>
@@ -1700,14 +1693,7 @@
         </div>
       </div>
       <div class="category-card reveal reveal-delay-2">
-        <div class="category-card-bg cat-bg-2" style="display:flex;align-items:center;justify-content:center;">
-          <svg width="100" height="200" viewBox="0 0 100 200" fill="none" opacity="0.35">
-            <ellipse cx="50" cy="30" rx="15" ry="18" fill="white"/>
-            <path d="M22 55 Q12 90 10 170 Q35 178 50 178 Q65 178 90 170 Q88 90 78 55 Q65 63 50 65 Q35 63 22 55Z" fill="white"/>
-            <path d="M22 58 Q8 75 5 110 Q14 114 22 106 Q26 85 35 70Z" fill="white"/>
-            <path d="M78 58 Q92 75 95 110 Q86 114 78 106 Q74 85 65 70Z" fill="white"/>
-          </svg>
-        </div>
+        <div class="category-card-bg" style="background-image:url('thobe-embroidered.jfif');background-size:cover;background-position:center top;"></div>
         <div class="category-card-overlay"></div>
         <div class="category-card-content">
           <div class="category-card-label">House of All</div>
@@ -1716,30 +1702,16 @@
         </div>
       </div>
       <div class="category-card reveal reveal-delay-3">
-        <div class="category-card-bg cat-bg-3" style="display:flex;align-items:center;justify-content:center;gap:20px;">
-          <svg width="60" height="150" viewBox="0 0 60 150" fill="none" opacity="0.35">
-            <ellipse cx="30" cy="20" rx="12" ry="14" fill="white"/>
-            <path d="M10 40 Q4 70 3 130 Q18 136 30 136 Q42 136 57 130 Q56 70 50 40 Q40 47 30 49 Q20 47 10 40Z" fill="white"/>
-          </svg>
-          <svg width="60" height="150" viewBox="0 0 60 150" fill="none" opacity="0.35">
-            <ellipse cx="30" cy="20" rx="12" ry="14" fill="white"/>
-            <path d="M10 40 Q4 70 3 130 Q18 136 30 136 Q42 136 57 130 Q56 70 50 40 Q40 47 30 49 Q20 47 10 40Z" fill="white"/>
-          </svg>
-        </div>
+        <div class="category-card-bg" style="background-image:url('couple-nikkah.jfif');background-size:cover;background-position:center;"></div>
         <div class="category-card-overlay"></div>
         <div class="category-card-content">
-          <div class="category-card-label">All Brands</div>
-          <div class="category-card-title">Unisex Collection</div>
+          <div class="category-card-label">Bloom Again Inclusive</div>
+          <div class="category-card-title">Couple Sets</div>
           <button class="category-card-btn">Shop Now →</button>
         </div>
       </div>
       <div class="category-card reveal reveal-delay-4">
-        <div class="category-card-bg cat-bg-4" style="display:flex;align-items:center;justify-content:center;">
-          <div style="text-align:center;opacity:0.3;color:white;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:60px;line-height:1;">✦</div>
-            <div style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;margin-top:8px;">Just Arrived</div>
-          </div>
-        </div>
+        <div class="category-card-bg" style="background-image:url('abaya-plum.jfif');background-size:cover;background-position:center top;"></div>
         <div class="category-card-overlay"></div>
         <div class="category-card-content">
           <div class="category-card-label">Drop</div>
@@ -1956,21 +1928,13 @@
     <div class="products-grid">
       <div class="product-card reveal reveal-delay-1">
         <div class="product-img-wrap">
-          <div class="product-img-bg" style="background:#E8E8E8;display:flex;align-items:center;justify-content:center;">
-            <svg width="100" height="220" viewBox="0 0 100 220" fill="none" opacity="0.5">
-              <ellipse cx="50" cy="30" rx="18" ry="22" fill="#888"/>
-              <path d="M18 60 Q6 110 4 200 Q30 210 50 210 Q70 210 96 200 Q94 110 82 60 Q66 72 50 75 Q34 72 18 60Z" fill="#888"/>
-              <path d="M18 63 Q4 85 1 130 Q14 136 22 124 Q28 95 36 78Z" fill="#888"/>
-              <path d="M82 63 Q96 85 99 130 Q86 136 78 124 Q72 95 64 78Z" fill="#888"/>
-              <path d="M30 30 Q24 18 24 8 Q36 0 50 0 Q64 0 76 8 Q76 18 70 30 Q62 44 50 46 Q38 44 30 30Z" fill="#888"/>
-            </svg>
-          </div>
+          <div class="product-img-bg" style="background-image:url('abaya-springtime.jfif');background-size:cover;background-position:center top;"></div>
           <div class="product-overlay"><button class="product-quick-add">Quick Add</button></div>
           <div class="product-badge">New</div>
         </div>
         <div class="product-info">
           <div class="product-brand">Nura Collection</div>
-          <div class="product-name">Midnight Abaya</div>
+          <div class="product-name">Signature Abaya</div>
           <div class="product-price">£89.00</div>
           <div class="product-sizes">
             <div class="size-dot">XS</div><div class="size-dot">S</div>
@@ -1980,20 +1944,14 @@
       </div>
       <div class="product-card reveal reveal-delay-2">
         <div class="product-img-wrap">
-          <div class="product-img-bg" style="background:#E0E0E0;display:flex;align-items:center;justify-content:center;">
-            <svg width="100" height="180" viewBox="0 0 100 180" fill="none" opacity="0.5">
-              <ellipse cx="50" cy="25" rx="15" ry="18" fill="#777"/>
-              <rect x="20" y="50" width="60" height="110" rx="2" fill="#777"/>
-              <path d="M20 55 Q6 70 3 100 Q12 106 20 98 Q22 80 28 68Z" fill="#777"/>
-              <path d="M80 55 Q94 70 97 100 Q88 106 80 98 Q78 80 72 68Z" fill="#777"/>
-            </svg>
-          </div>
+          <div class="product-img-bg" style="background-image:url('couple-nikkah.jfif');background-size:cover;background-position:center;"></div>
           <div class="product-overlay"><button class="product-quick-add">Quick Add</button></div>
+          <div class="product-badge">New</div>
         </div>
         <div class="product-info">
-          <div class="product-brand">House of All</div>
-          <div class="product-name">Essential Set</div>
-          <div class="product-price">£55.00</div>
+          <div class="product-brand">Bloom Again Inclusive</div>
+          <div class="product-name">Couple Set</div>
+          <div class="product-price">£145.00</div>
           <div class="product-sizes">
             <div class="size-dot">XS</div><div class="size-dot">S</div>
             <div class="size-dot">M</div><div class="size-dot">L</div>
@@ -2002,20 +1960,13 @@
       </div>
       <div class="product-card reveal reveal-delay-3">
         <div class="product-img-wrap">
-          <div class="product-img-bg" style="background:#EBEBEB;display:flex;align-items:center;justify-content:center;">
-            <svg width="100" height="200" viewBox="0 0 100 200" fill="none" opacity="0.5">
-              <ellipse cx="50" cy="28" rx="16" ry="20" fill="#999"/>
-              <path d="M20 55 Q8 100 6 185 Q30 194 50 194 Q70 194 94 185 Q92 100 80 55 Q65 65 50 67 Q35 65 20 55Z" fill="#999"/>
-              <path d="M20 58 Q6 78 3 115 Q14 120 22 110 Q26 88 34 72Z" fill="#999"/>
-              <path d="M80 58 Q94 78 97 115 Q86 120 78 110 Q74 88 66 72Z" fill="#999"/>
-            </svg>
-          </div>
+          <div class="product-img-bg" style="background-image:url('thobe-embroidered.jfif');background-size:cover;background-position:center top;"></div>
           <div class="product-overlay"><button class="product-quick-add">Quick Add</button></div>
           <div class="product-badge sale">Sale</div>
         </div>
         <div class="product-info">
           <div class="product-brand">Nura Collection</div>
-          <div class="product-name">Linen Thobe</div>
+          <div class="product-name">Embroidered Thobe</div>
           <div class="product-price">£75.00 <span style="text-decoration:line-through;color:var(--gray-light);font-size:11px;">£95.00</span></div>
           <div class="product-sizes">
             <div class="size-dot">S</div><div class="size-dot">M</div>
@@ -2025,19 +1976,14 @@
       </div>
       <div class="product-card reveal reveal-delay-4">
         <div class="product-img-wrap">
-          <div class="product-img-bg" style="background:#E5E5E5;display:flex;align-items:center;justify-content:center;">
-            <svg width="90" height="160" viewBox="0 0 90 160" fill="none" opacity="0.5">
-              <rect x="15" y="5" width="60" height="80" rx="2" fill="#888"/>
-              <rect x="15" y="88" width="60" height="65" rx="2" fill="#777"/>
-            </svg>
-          </div>
+          <div class="product-img-bg" style="background-image:url('abaya-plum.jfif');background-size:cover;background-position:center top;"></div>
           <div class="product-overlay"><button class="product-quick-add">Quick Add</button></div>
           <div class="product-badge">Popular</div>
         </div>
         <div class="product-info">
-          <div class="product-brand">House of All</div>
-          <div class="product-name">Co-ord Set</div>
-          <div class="product-price">£62.00</div>
+          <div class="product-brand">Nura Collection</div>
+          <div class="product-name">Plum Khimar Set</div>
+          <div class="product-price">£58.00</div>
           <div class="product-sizes">
             <div class="size-dot">XS</div><div class="size-dot">S</div>
             <div class="size-dot">M</div><div class="size-dot">L</div>
@@ -2732,13 +2678,24 @@
   // 3-panel hero slideshow
   (function initPanelSlideshow() {
     const images = [
+      'abaya-springtime.jfif',
+      'thobe-embroidered.jfif',
+      'couple-nikkah.jfif',
       'abaya-plum.jfif',
-      'kashmiri-thobe.jfif',
-      'emirati-thobe.jfif',
-      'look-1.jfif',
-      'look-2.jfif',
+      'mens-prince.jfif',
+      'couple-wedding.jfif',
       'luxury-dubai-abaya.jfif',
-      'baraka-set.jfif'
+      'kashmiri-thobe.jfif',
+      'baraka-set.jfif',
+      'look-1.jfif',
+      'emirati-thobe.jfif',
+      'baraka-set2.jfif',
+      'look-2.jfif',
+      'fashion-2.jfif',
+      'fashion-3.jfif',
+      'fashion-4.jfif',
+      'fashion-5.jfif',
+      'fashion-6.jfif'
     ];
 
     const panels = [
