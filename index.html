@@ -65,7 +65,7 @@
   nav {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 600;
     background: rgba(255,255,255,0.97);
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(12px);
@@ -1538,29 +1538,157 @@
     .hero-scroll-hint { display: none; }
   }
 
-  /* Mobile menu open state */
-  nav.menu-open .nav-links-mobile {
+  /* ─── MOBILE OVERLAY MENU ─── */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--near-black);
+    z-index: 500;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    position: fixed;
-    top: 60px; left: 0; right: 0;
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    z-index: 200;
-    padding: 8px 0;
+    padding: 0 32px 40px;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .nav-links-mobile a {
-    display: block;
-    padding: 14px 24px;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--black);
+  .mobile-overlay.open { transform: translateX(0); }
+
+  .mob-overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    flex-shrink: 0;
+  }
+  .mob-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--white);
+    letter-spacing: 0.1em;
     text-decoration: none;
-    border-bottom: 1px solid var(--border);
   }
-  .nav-links-mobile a:last-child { border-bottom: none; }
+  .mob-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+  }
+  .mob-close:hover { color: var(--white); }
+  .mob-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.3; }
+
+  .mob-hr { height: 1px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+  .mob-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 0 28px;
+  }
+  .mob-nav-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  .mob-nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    cursor: pointer;
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+  .mob-nav-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.82);
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateX(28px);
+    transition: color 0.25s, opacity 0.5s ease, transform 0.5s ease;
+    line-height: 1;
+  }
+  .mobile-overlay.open .mob-nav-label { opacity: 1; transform: translateX(0); }
+  .mobile-overlay.open .mob-nav-item:nth-child(1) .mob-nav-label { transition-delay: 0.08s; }
+  .mobile-overlay.open .mob-nav-item:nth-child(2) .mob-nav-label { transition-delay: 0.15s; }
+  .mobile-overlay.open .mob-nav-item:nth-child(3) .mob-nav-label { transition-delay: 0.22s; }
+  .mobile-overlay.open .mob-nav-item:nth-child(4) .mob-nav-label { transition-delay: 0.29s; }
+  .mob-nav-row:hover .mob-nav-label,
+  .mob-nav-row.sub-open .mob-nav-label { color: var(--accent); }
+
+  .mob-chevron {
+    font-size: 22px;
+    color: rgba(255,255,255,0.18);
+    transition: transform 0.3s ease, color 0.25s;
+    flex-shrink: 0;
+    padding-left: 8px;
+    line-height: 1;
+  }
+  .mob-nav-row.sub-open .mob-chevron { transform: rotate(90deg); color: var(--accent); }
+
+  .mob-sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.38s ease;
+  }
+  .mob-sub.open { max-height: 300px; }
+  .mob-sub-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    padding: 11px 0 11px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: color 0.2s;
+  }
+  .mob-sub-link:last-child { border-bottom: none; margin-bottom: 8px; }
+  .mob-sub-link::before {
+    content: '';
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+  .mob-sub-link:hover { color: rgba(255,255,255,0.75); }
+  .mob-sub-link:hover::before { opacity: 1; }
+
+  .mob-footer {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 22px;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.45s;
+  }
+  .mobile-overlay.open .mob-footer { opacity: 1; }
+  .mob-footer p, .mob-footer a {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+    text-decoration: none;
+    margin-bottom: 5px;
+  }
+  .mob-footer a { color: rgba(255,255,255,0.38); }
+  .mob-footer a:hover { color: var(--accent); }
+
+  /* Hamburger → X */
+  .mobile-menu-btn span { transition: all 0.32s ease; }
+  .mobile-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .mobile-menu-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 </style>
 </head>
 <body>
@@ -1606,13 +1734,53 @@
     </div>
   </div>
   <!-- Mobile dropdown -->
-  <div class="nav-links-mobile" id="mobileMenu" style="display:none;">
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#shop">Nura Collection</a>
-    <a href="#shop">Inclusive</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+  <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true">
+    <!-- Header -->
+    <div class="mob-overlay-header">
+      <a href="#home" class="mob-logo" id="mobOverlayLogo">Bloom Again</a>
+      <button class="mob-close" id="mobCloseBtn" aria-label="Close menu">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="mob-hr"></div>
+
+    <!-- Nav links -->
+    <nav class="mob-nav" aria-label="Mobile navigation">
+      <div class="mob-nav-item">
+        <a href="#home" class="mob-nav-row mob-close-link">
+          <span class="mob-nav-label">Home</span>
+        </a>
+      </div>
+      <div class="mob-nav-item">
+        <button class="mob-nav-row" id="mobShopToggle" aria-expanded="false">
+          <span class="mob-nav-label">Shop</span>
+          <span class="mob-chevron">›</span>
+        </button>
+        <div class="mob-sub" id="mobShopSub" role="list">
+          <a href="#nura-section" class="mob-sub-link mob-close-link" role="listitem">Women's Modest Wear</a>
+          <a href="#mens-section" class="mob-sub-link mob-close-link" role="listitem">Men's Wear</a>
+          <a href="#bai-section" class="mob-sub-link mob-close-link" role="listitem">Couple Sets</a>
+          <a href="#new-drops" class="mob-sub-link mob-close-link" role="listitem">New Arrivals</a>
+        </div>
+      </div>
+      <div class="mob-nav-item">
+        <a href="#about" class="mob-nav-row mob-close-link">
+          <span class="mob-nav-label">About</span>
+        </a>
+      </div>
+      <div class="mob-nav-item">
+        <a href="#contact" class="mob-nav-row mob-close-link">
+          <span class="mob-nav-label">Contact</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Footer info -->
+    <div class="mob-footer">
+      <a href="mailto:hello@bloomagain.com">hello@bloomagain.com</a>
+      <p>Free delivery on orders over £80</p>
+      <p>Nura Collection · House of All · Est. 2025</p>
+    </div>
   </div>
 </nav>
 
@@ -2409,11 +2577,11 @@
         </div>
         <div class="bai-card reveal reveal-delay-3">
           <div class="bai-img">
-            <div class="bai-img-inner" style="position:absolute;inset:0;background-image:url('baraka-set2.jfif');background-size:cover;background-position:center top;"></div>
+            <div class="bai-img-inner" style="position:absolute;inset:0;background-image:url('couple-oyiza.jfif');background-size:cover;background-position:center top;"></div>
           </div>
           <div class="bai-info">
             <div class="bai-brand">Bloom Again Inclusive</div>
-            <div class="bai-name">Baraka Couple Set</div>
+            <div class="bai-name">Nikkah Bride Set</div>
             <div class="bai-price">£165.00</div>
             <div class="bai-sizes">
               <div class="bai-size">XS</div><div class="bai-size">S</div>
@@ -2424,11 +2592,11 @@
         </div>
         <div class="bai-card reveal reveal-delay-4">
           <div class="bai-img">
-            <div class="bai-img-inner" style="position:absolute;inset:0;background-image:url('look-1.jfif');background-size:cover;background-position:center top;"></div>
+            <div class="bai-img-inner" style="position:absolute;inset:0;background-image:url('couple-pure-love.jfif');background-size:cover;background-position:center top;"></div>
           </div>
           <div class="bai-info">
             <div class="bai-brand">Bloom Again Inclusive</div>
-            <div class="bai-name">Matching Look</div>
+            <div class="bai-name">Pure Love Set</div>
             <div class="bai-price">£120.00</div>
             <div class="bai-sizes">
               <div class="bai-size">S</div><div class="bai-size">M</div>
@@ -2767,20 +2935,50 @@
     setInterval(() => goTo((current + 1) % sets), 5000);
   })();
 
-  // Mobile menu toggle
+  // Mobile overlay menu
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  mobileMenuBtn.addEventListener('click', () => {
-    const open = mobileMenu.style.display === 'flex';
-    mobileMenu.style.display = open ? 'none' : 'flex';
-    mobileMenuBtn.classList.toggle('active', !open);
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const mobCloseBtn  = document.getElementById('mobCloseBtn');
+  const mobShopToggle = document.getElementById('mobShopToggle');
+  const mobShopSub    = document.getElementById('mobShopSub');
+
+  function openMobileMenu() {
+    mobileOverlay.classList.add('open');
+    mobileOverlay.setAttribute('aria-hidden', 'false');
+    mobileMenuBtn.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    mobileOverlay.classList.remove('open');
+    mobileOverlay.setAttribute('aria-hidden', 'true');
+    mobileMenuBtn.classList.remove('open');
+    document.body.style.overflow = '';
+    mobShopSub.classList.remove('open');
+    mobShopToggle.classList.remove('sub-open');
+    mobShopToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  mobileMenuBtn.addEventListener('click', openMobileMenu);
+  mobCloseBtn.addEventListener('click', closeMobileMenu);
+
+  // Logo link in overlay also closes
+  document.getElementById('mobOverlayLogo').addEventListener('click', closeMobileMenu);
+
+  // Shop accordion
+  mobShopToggle.addEventListener('click', () => {
+    const isOpen = mobShopSub.classList.toggle('open');
+    mobShopToggle.classList.toggle('sub-open', isOpen);
+    mobShopToggle.setAttribute('aria-expanded', String(isOpen));
   });
-  // Close menu when a link is tapped
-  mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileMenu.style.display = 'none';
-      mobileMenuBtn.classList.remove('active');
-    });
+
+  // Close on any nav link tap
+  document.querySelectorAll('.mob-close-link').forEach(a => {
+    a.addEventListener('click', closeMobileMenu);
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileOverlay.classList.contains('open')) closeMobileMenu();
   });
 
   // Sticky nav shadow
