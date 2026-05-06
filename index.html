@@ -1489,9 +1489,9 @@
     .policies-section { padding-left: 16px; padding-right: 16px; }
     .section { padding-top: 60px; padding-bottom: 60px; }
 
-    /* Grids → single column */
-    .category-grid, .products-grid, .new-drops-grid,
-    .bestsellers-grid, .nura-grid, .bai-grid { grid-template-columns: 1fr; }
+    /* Grids → single column (categories/drops) or 2 columns (products) */
+    .category-grid, .new-drops-grid { grid-template-columns: 1fr 1fr; }
+    .products-grid, .bestsellers-grid, .nura-grid, .bai-grid { grid-template-columns: 1fr 1fr; }
     .promo-items { flex-direction: column; align-items: center; }
     .promo-item { width: 100%; max-width: 320px; }
 
