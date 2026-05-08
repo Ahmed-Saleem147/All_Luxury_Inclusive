@@ -2886,6 +2886,11 @@
 </footer>
 
 <script>
+  // Always land at top of page on load/reload
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  if (window.location.hash) history.replaceState(null, '', window.location.pathname);
+  window.scrollTo(0, 0);
+
   // 3-panel hero slideshow
   (function initPanelSlideshow() {
     const images = [
