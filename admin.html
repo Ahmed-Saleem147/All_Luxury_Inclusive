@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Bloom Again</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent: #C4A882;
+  --accent-d: #b09270;
+  --near-black: #2C2018;
+  --black: #1A120A;
+  --white: #FAF7F3;
+  --off-white: #F4EFE9;
+  --light: #EDE6DE;
+  --border: #D8CEBF;
+  --gray: #9A8C7E;
+  --text: #2C2018;
+  --sidebar-w: 230px;
+}
+html, body { height: 100%; overflow: hidden; }
+body { font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--text); font-size: 13px; font-weight: 300; }
+
+/* ─── LOGIN ─── */
+#loginScreen {
+  position: fixed; inset: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--near-black);
+}
+.login-box { background: var(--white); padding: 48px 40px; width: min(360px, 90vw); text-align: center; }
+.login-logo { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: var(--near-black); }
+.login-sub { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray); margin-bottom: 36px; margin-top: 4px; }
+.login-box input {
+  width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+  background: var(--off-white); font-family: 'Jost', sans-serif; font-size: 13px;
+  margin-bottom: 12px; outline: none; transition: border-color 0.2s;
+}
+.login-box input:focus { border-color: var(--accent); }
+.btn-login {
+  width: 100%; padding: 13px; background: var(--near-black); color: white; border: none;
+  cursor: pointer; font-family: 'Jost', sans-serif; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; transition: background 0.2s;
+}
+.btn-login:hover { background: var(--black); }
+.login-err { color: #b0291c; font-size: 11px; margin-top: 10px; display: none; }
+
+/* ─── LAYOUT ─── */
+#adminApp { display: none; height: 100vh; }
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; height: 100vh; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  background: var(--near-black); display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden;
+}
+.sb-header { padding: 22px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+.sb-brand { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--white); letter-spacing: 0.06em; display: block; }
+.sb-sub { font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.22); margin-top: 2px; display: block; }
+.sb-nav { flex: 1; padding: 8px 0; }
+.sb-group { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.18); padding: 14px 18px 5px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 9px 18px; background: none; border: none; text-align: left; cursor: pointer;
+  color: rgba(255,255,255,0.45); font-family: 'Jost', sans-serif;
+  font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 300;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; flex-shrink: 0; }
+.nav-btn:hover { color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.04); }
+.nav-btn.active { color: var(--accent); background: rgba(196,168,130,0.1); }
+.nav-btn.active svg { stroke: var(--accent); }
+.sb-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+.view-site {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s;
+}
+.view-site:hover { color: var(--accent); }
+.view-site svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.logout-btn {
+  display: flex; align-items: center; gap: 7px; margin-top: 10px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.22); transition: color 0.2s;
+}
+.logout-btn:hover { color: #e07070; }
+.logout-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* ─── MAIN ─── */
+.main { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.topbar {
+  height: 58px; background: var(--white); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 28px; flex-shrink: 0;
+}
+.topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; }
+.topbar-btns { display: flex; gap: 8px; }
+.btn { padding: 8px 16px; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.2s; }
+.btn-dark { background: var(--near-black); color: white; }
+.btn-dark:hover { background: var(--black); }
+.btn-outline { background: none; color: var(--text); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--near-black); }
+.btn-red { background: none; color: #b0291c; border: 1px solid #e8b4b0; }
+.btn-red:hover { background: #fff5f5; }
+.btn-accent { background: var(--accent); color: white; }
+.btn-accent:hover { background: var(--accent-d); }
+
+.content { flex: 1; overflow-y: auto; padding: 28px 32px; }
+
+/* ─── PANELS ─── */
+.panel { display: none; }
+.panel.on { display: block; }
+
+/* ─── DASHBOARD ─── */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.stat { background: var(--white); border: 1px solid var(--border); padding: 22px 18px; }
+.stat.dark { background: var(--near-black); border-color: transparent; }
+.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; line-height: 1; margin-bottom: 5px; color: var(--text); }
+.stat.dark .stat-n { color: var(--accent); }
+.stat-l { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); }
+.stat.dark .stat-l { color: rgba(255,255,255,0.25); }
+.dash-sections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.dash-card { background: var(--white); border: 1px solid var(--border); padding: 20px; }
+.dash-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.dash-card-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; }
+.dash-card-count { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); text-align: right; }
+.dash-imgs { display: flex; gap: 3px; }
+.dash-thumb { width: 48px; height: 64px; object-fit: cover; background: var(--light); flex-shrink: 0; }
+
+/* ─── PRODUCTS ─── */
+.section-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.section-bar h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; }
+.section-bar p { font-size: 11px; color: var(--gray); margin-top: 2px; }
+.prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.prod-card { background: var(--white); border: 1px solid var(--border); position: relative; }
+.prod-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--light); display: block; }
+.prod-info { padding: 10px 12px; }
+.prod-name { font-size: 12.5px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.prod-price { font-size: 11.5px; color: var(--gray); }
+.prod-badge {
+  position: absolute; top: 7px; left: 7px;
+  font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 3px 7px; background: var(--near-black); color: white;
+}
+.prod-badge.sale { background: #8B1A1A; }
+.prod-badge.popular { background: var(--accent); }
+.prod-actions { display: flex; border-top: 1px solid var(--border); }
+.prod-btn { flex: 1; padding: 9px 6px; border: none; cursor: pointer; background: none; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Jost', sans-serif; font-weight: 300; transition: background 0.15s; color: var(--text); }
+.prod-btn:hover { background: var(--off-white); }
+.prod-btn.del { color: #b0291c; }
+.prod-btn.del:hover { background: #fff5f5; }
+.prod-btn + .prod-btn { border-left: 1px solid var(--border); }
+.add-card {
+  border: 2px dashed var(--border); background: none; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; cursor: pointer; aspect-ratio: 3/4; transition: all 0.2s; color: var(--gray);
+}
+.add-card:hover { border-color: var(--accent); color: var(--accent); background: rgba(196,168,130,0.03); }
+.add-card svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.3; }
+.add-card span { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* ─── HERO ─── */
+.hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.hero-card { position: relative; aspect-ratio: 3/4; background: var(--light); overflow: hidden; }
+.hero-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-card-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.2s;
+}
+.hero-card:hover .hero-card-overlay { opacity: 1; }
+.hero-del-btn {
+  width: 34px; height: 34px; background: white; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-del-btn svg { width: 14px; height: 14px; stroke: #b0291c; fill: none; stroke-width: 2; }
+.hero-fname {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 6px 6px 4px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white; font-size: 8.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hero-add-card {
+  aspect-ratio: 3/4; border: 2px dashed var(--border); background: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer; color: var(--gray); transition: all 0.2s;
+}
+.hero-add-card:hover { border-color: var(--accent); color: var(--accent); }
+.hero-add-card svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.3; }
+.hero-add-card span { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* ─── SETTINGS ─── */
+.settings-block { background: var(--white); border: 1px solid var(--border); padding: 26px; max-width: 480px; margin-bottom: 18px; }
+.settings-block h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 4px; }
+.settings-block p { font-size: 11.5px; color: var(--gray); margin-bottom: 20px; line-height: 1.5; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+.field input, .field select {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+  background: var(--off-white); font-family: 'Jost', sans-serif; font-size: 13px; outline: none;
+  transition: border-color 0.2s; color: var(--text);
+}
+.field input:focus, .field select:focus { border-color: var(--accent); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ─── MODAL ─── */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 800;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-bg.on { display: flex; }
+.modal { background: var(--white); width: min(500px, 94vw); max-height: 92vh; overflow-y: auto; }
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+}
+.modal-head h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; }
+.modal-x { background: none; border: none; cursor: pointer; font-size: 22px; color: var(--gray); line-height: 1; padding: 0 4px; }
+.modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.modal-foot { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+.img-prev-wrap { display: flex; gap: 16px; align-items: flex-start; }
+.img-prev {
+  width: 90px; height: 120px; object-fit: cover; background: var(--light);
+  display: block; flex-shrink: 0; border: 1px solid var(--border);
+}
+.sizes-row { display: flex; flex-wrap: wrap; gap: 7px; }
+.sz-btn {
+  min-width: 38px; padding: 6px 9px; border: 1px solid var(--border);
+  background: none; cursor: pointer; font-size: 11px; font-family: 'Jost', sans-serif; font-weight: 300;
+  transition: all 0.15s; text-align: center;
+}
+.sz-btn.on { background: var(--near-black); color: white; border-color: var(--near-black); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 22px; right: 22px; z-index: 1000;
+  background: var(--near-black); color: white;
+  padding: 11px 18px; font-size: 12px; letter-spacing: 0.04em;
+  transform: translateY(60px); opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  pointer-events: none;
+}
+.toast.on { transform: translateY(0); opacity: 1; }
+.toast.ok { background: #2d6a4f; }
+.toast.err { background: #b0291c; }
+</style>
+</head>
+<body>
+
+<!-- ═══════ LOGIN ═══════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Bloom Again</div>
+    <div class="login-sub">Admin Portal</div>
+    <input type="password" id="loginPw" placeholder="Enter password" autocomplete="current-password">
+    <button class="btn-login" id="loginBtn">Sign In →</button>
+    <div class="login-err" id="loginErr">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ═══════ APP ═══════ -->
+<div id="adminApp">
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sb-header">
+        <span class="sb-brand">Bloom Again</span>
+        <span class="sb-sub">Admin Portal</span>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-group">Overview</div>
+        <button class="nav-btn active" data-panel="dashboard">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+
+        <div class="sb-group">Collections</div>
+        <button class="nav-btn" data-panel="womens">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.5 2 7.5 7 7.5 7s-4.5.5-4.5 7v8h18v-8c0-6.5-4.5-7-4.5-7S15.5 2 12 2z"/></svg>
+          Women's
+        </button>
+        <button class="nav-btn" data-panel="mens">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+          Men's
+        </button>
+        <button class="nav-btn" data-panel="couples">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Couples
+        </button>
+
+        <div class="sb-group">Media</div>
+        <button class="nav-btn" data-panel="hero">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 15 5-5 4 4 3-3 4 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+          Hero Slideshow
+        </button>
+
+        <div class="sb-group">System</div>
+        <button class="nav-btn" data-panel="settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button>
+      </div>
+      <div class="sb-footer">
+        <a href="index.html" target="_blank" class="view-site">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View Live Site
+        </a>
+        <button class="logout-btn" onclick="logout()">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-btns" id="topbarBtns">
+          <button class="btn btn-outline" onclick="resetDefaults()">Reset Defaults</button>
+          <button class="btn btn-dark" onclick="saveAll()">Save Changes</button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- DASHBOARD -->
+        <div class="panel on" id="panel-dashboard">
+          <div class="stat-row">
+            <div class="stat"><div class="stat-n" id="sn-w">4</div><div class="stat-l">Women's Products</div></div>
+            <div class="stat"><div class="stat-n" id="sn-m">4</div><div class="stat-l">Men's Products</div></div>
+            <div class="stat"><div class="stat-n" id="sn-c">5</div><div class="stat-l">Couple Sets</div></div>
+            <div class="stat dark"><div class="stat-n" id="sn-h">18</div><div class="stat-l">Hero Images</div></div>
+          </div>
+          <div class="dash-sections" id="dashSections"></div>
+        </div>
+
+        <!-- WOMEN'S -->
+        <div class="panel" id="panel-womens">
+          <div class="section-bar">
+            <div><h2>Women's Collection</h2><p>Nura Collection — Abayas &amp; Modest Wear</p></div>
+            <button class="btn btn-dark" onclick="openAdd('womens')">+ Add Product</button>
+          </div>
+          <div class="prod-grid" id="grid-womens"></div>
+        </div>
+
+        <!-- MEN'S -->
+        <div class="panel" id="panel-mens">
+          <div class="section-bar">
+            <div><h2>Men's Collection</h2><p>House of All — Thobes &amp; Essentials</p></div>
+            <button class="btn btn-dark" onclick="openAdd('mens')">+ Add Product</button>
+          </div>
+          <div class="prod-grid" id="grid-mens"></div>
+        </div>
+
+        <!-- COUPLES -->
+        <div class="panel" id="panel-couples">
+          <div class="section-bar">
+            <div><h2>Couple Sets</h2><p>Bloom Again Inclusive — Couple Collections</p></div>
+            <button class="btn btn-dark" onclick="openAdd('couples')">+ Add Product</button>
+          </div>
+          <div class="prod-grid" id="grid-couples"></div>
+        </div>
+
+        <!-- HERO -->
+        <div class="panel" id="panel-hero">
+          <div class="section-bar">
+            <div><h2>Hero Slideshow</h2><p>Images rotate in sets of 3 across the hero panels</p></div>
+            <button class="btn btn-dark" onclick="openHeroAdd()">+ Add Image</button>
+          </div>
+          <div class="hero-grid" id="heroGrid"></div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="panel" id="panel-settings">
+          <div class="settings-block">
+            <h3>Change Password</h3>
+            <p>Update the admin login password. You'll need to sign in again after changing it.</p>
+            <div class="field"><label>Current Password</label><input type="password" id="curPw" placeholder="Current password"></div>
+            <div class="field"><label>New Password</label><input type="password" id="newPw" placeholder="New password"></div>
+            <div class="field"><label>Confirm New Password</label><input type="password" id="cfmPw" placeholder="Confirm new password"></div>
+            <button class="btn btn-dark" onclick="changePw()">Update Password</button>
+          </div>
+          <div class="settings-block">
+            <h3>Data Management</h3>
+            <p>Export your current product data as JSON, or reset everything back to the original defaults.</p>
+            <div class="btn-row">
+              <button class="btn btn-outline" onclick="exportJSON()">Export JSON</button>
+              <button class="btn btn-red" onclick="resetDefaults()">Reset to Defaults</button>
+            </div>
+          </div>
+          <div class="settings-block">
+            <h3>About This Portal</h3>
+            <p>Changes saved here are stored in your browser's local storage. Open <strong>index.html</strong> in the same browser to see your updates reflected on the site. To publish changes to GitHub Pages, also update the product sections in index.html.</p>
+          </div>
+        </div>
+
+      </div><!-- .content -->
+    </div><!-- .main -->
+  </div><!-- .layout -->
+</div><!-- #adminApp -->
+
+<!-- PRODUCT MODAL -->
+<div class="modal-bg" id="prodModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Edit Product</h3>
+      <button class="modal-x" onclick="closeProdModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="img-prev-wrap">
+        <img class="img-prev" id="imgPrev" src="" alt="Preview">
+        <div class="field" style="flex:1;margin-bottom:0;">
+          <label>Image Filename</label>
+          <input type="text" id="fImg" placeholder="e.g. abaya-springtime.jfif" oninput="prevImg()">
+          <div style="font-size:10px;color:var(--gray);margin-top:6px;line-height:1.5;">File must be in the same folder as index.html</div>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="field" style="margin:0"><label>Product Name</label><input type="text" id="fName" placeholder="e.g. Spring Abaya"></div>
+        <div class="field" style="margin:0"><label>Price</label><input type="text" id="fPrice" placeholder="e.g. £89.00"></div>
+      </div>
+      <div class="modal-row">
+        <div class="field" style="margin:0"><label>Brand Label</label><input type="text" id="fBrand" placeholder="e.g. Nura Collection"></div>
+        <div class="field" style="margin:0">
+          <label>Badge</label>
+          <select id="fBadge">
+            <option value="">None</option>
+            <option value="New">New</option>
+            <option value="Popular">Popular</option>
+            <option value="Sale">Sale</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin:0">
+        <label>Available Sizes</label>
+        <div class="sizes-row" id="sizesRow">
+          <button type="button" class="sz-btn" data-sz="XS">XS</button>
+          <button type="button" class="sz-btn" data-sz="S">S</button>
+          <button type="button" class="sz-btn" data-sz="M">M</button>
+          <button type="button" class="sz-btn" data-sz="L">L</button>
+          <button type="button" class="sz-btn" data-sz="XL">XL</button>
+          <button type="button" class="sz-btn" data-sz="XXL">XXL</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeProdModal()">Cancel</button>
+      <button class="btn btn-dark" onclick="saveProd()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO ADD MODAL -->
+<div class="modal-bg" id="heroModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Add Hero Image</h3>
+      <button class="modal-x" onclick="closeHeroModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Image Filename</label>
+        <input type="text" id="heroFname" placeholder="e.g. look-1.jfif" oninput="prevHeroImg()">
+        <div style="font-size:10px;color:var(--gray);margin-top:6px;">Must be a file already in the site folder</div>
+      </div>
+      <img id="heroPrev" src="" alt="" style="width:100%;max-height:180px;object-fit:cover;background:var(--light);display:block;margin-top:4px;">
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeHeroModal()">Cancel</button>
+      <button class="btn btn-dark" onclick="addHeroImg()">Add to Slideshow</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════ DEFAULTS ═══════════
+const DEFAULTS = {
+  womens: [
+    { id:1, image:'abaya-springtime.jfif', name:'Spring Abaya',      price:'£89.00',  brand:'Nura Collection', badge:'New',     sizes:['XS','S','M','L','XL'] },
+    { id:2, image:'abaya-plum.jfif',       name:'Plum Abaya',        price:'£85.00',  brand:'Nura Collection', badge:'',       sizes:['XS','S','M','L','XL'] },
+    { id:3, image:'luxury-dubai-abaya.jfif',name:'Dubai Abaya',      price:'£110.00', brand:'Nura Collection', badge:'Popular',sizes:['XS','S','M','L'] },
+    { id:4, image:'baraka-set.jfif',       name:'Baraka Abaya Set',  price:'£95.00',  brand:'Nura Collection', badge:'',       sizes:['XS','S','M','L','XL'] },
+  ],
+  mens: [
+    { id:1, image:'thobe-embroidered.jfif',name:'Embroidered Thobe', price:'£95.00',  brand:'House of All',    badge:'New',    sizes:['S','M','L','XL','XXL'] },
+    { id:2, image:'kashmiri-thobe.jfif',   name:'Kashmiri Thobe',    price:'£85.00',  brand:'House of All',    badge:'',       sizes:['S','M','L','XL','XXL'] },
+    { id:3, image:'emirati-thobe.jfif',    name:'Emirati Thobe',     price:'£90.00',  brand:'House of All',    badge:'Popular',sizes:['S','M','L','XL','XXL'] },
+    { id:4, image:'mens-prince.jfif',      name:'Prince Collection', price:'£98.00',  brand:'House of All',    badge:'',       sizes:['S','M','L','XL','XXL'] },
+  ],
+  couples: [
+    { id:1, image:'couple-nikkah.jfif',    name:'Nikkah Collection', price:'£145.00', brand:'Bloom Again Inclusive', badge:'',  sizes:['XS','S','M','L','XL'] },
+    { id:2, image:'couple-wedding.jfif',   name:'Wedding Set',       price:'£180.00', brand:'Bloom Again Inclusive', badge:'',  sizes:['XS','S','M','L','XL','XXL'] },
+    { id:3, image:'couple-oyiza.jfif',     name:'Nikkah Bride Set',  price:'£165.00', brand:'Bloom Again Inclusive', badge:'',  sizes:['XS','S','M','L','XL','XXL'] },
+    { id:4, image:'couple-pure-love.jfif', name:'Pure Love Set',     price:'£120.00', brand:'Bloom Again Inclusive', badge:'',  sizes:['S','M','L','XL','XXL'] },
+    { id:5, image:'fashion-2.jfif',        name:'Baraka Couple Set', price:'£155.00', brand:'Bloom Again Inclusive', badge:'',  sizes:['XS','S','M','L','XL'] },
+  ],
+  hero: [
+    'abaya-springtime.jfif','thobe-embroidered.jfif','couple-nikkah.jfif',
+    'abaya-plum.jfif','mens-prince.jfif','couple-wedding.jfif',
+    'luxury-dubai-abaya.jfif','kashmiri-thobe.jfif','baraka-set.jfif',
+    'look-1.jfif','emirati-thobe.jfif','baraka-set2.jfif',
+    'look-2.jfif','fashion-2.jfif','fashion-3.jfif',
+    'fashion-4.jfif','fashion-5.jfif','fashion-6.jfif'
+  ]
+};
+
+// ═══════════ STATE ═══════════
+let S = clone(DEFAULTS);
+let editSec = null, editId = null;
+
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function nextId(arr) { return arr.length ? Math.max(...arr.map(p => p.id)) + 1 : 1; }
+
+// ═══════════ AUTH ═══════════
+function getPw() { return localStorage.getItem('ba_pw') || 'bloom2025'; }
+
+document.getElementById('loginBtn').onclick = doLogin;
+document.getElementById('loginPw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const v = document.getElementById('loginPw').value;
+  if (v === getPw()) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    loadData(); renderAll();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginPw').value = '';
+  }
+}
+
+function changePw() {
+  const cur = document.getElementById('curPw').value;
+  const nw  = document.getElementById('newPw').value;
+  const cf  = document.getElementById('cfmPw').value;
+  if (cur !== getPw()) return toast('Current password is incorrect', 'err');
+  if (!nw)            return toast('New password cannot be empty', 'err');
+  if (nw !== cf)      return toast('Passwords do not match', 'err');
+  localStorage.setItem('ba_pw', nw);
+  ['curPw','newPw','cfmPw'].forEach(id => document.getElementById(id).value = '');
+  toast('Password updated', 'ok');
+}
+
+// ═══════════ DATA ═══════════
+function loadData() {
+  try {
+    const saved = localStorage.getItem('ba_data');
+    if (saved) S = JSON.parse(saved);
+    else S = clone(DEFAULTS);
+  } catch { S = clone(DEFAULTS); }
+}
+
+function saveAll() {
+  localStorage.setItem('ba_data', JSON.stringify(S));
+  localStorage.setItem('ba_site_data', JSON.stringify(S));
+  toast('Changes saved!', 'ok');
+  updateStats();
+}
+
+function resetDefaults() {
+  if (!confirm('Reset all product data to defaults? This cannot be undone.')) return;
+  S = clone(DEFAULTS);
+  saveAll(); renderAll();
+  toast('Reset to defaults', 'ok');
+}
+
+function exportJSON() {
+  const b = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'bloom-again-data.json';
+  a.click();
+  toast('JSON exported', 'ok');
+}
+
+// ═══════════ NAV ═══════════
+const titles = { dashboard:'Dashboard', womens:"Women's Collection", mens:"Men's Collection", couples:'Couple Sets', hero:'Hero Slideshow', settings:'Settings' };
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('on');
+    document.getElementById('topbarTitle').textContent = titles[btn.dataset.panel];
+    const btns = document.getElementById('topbarBtns');
+    btns.innerHTML = btn.dataset.panel === 'settings'
+      ? ''
+      : '<button class="btn btn-outline" onclick="resetDefaults()">Reset Defaults</button><button class="btn btn-dark" onclick="saveAll()">Save Changes</button>';
+  });
+});
+
+// ═══════════ RENDER ═══════════
+function renderAll() {
+  ['womens','mens','couples'].forEach(renderGrid);
+  renderHero(); renderDash(); updateStats();
+}
+
+function updateStats() {
+  document.getElementById('sn-w').textContent = S.womens.length;
+  document.getElementById('sn-m').textContent = S.mens.length;
+  document.getElementById('sn-c').textContent = S.couples.length;
+  document.getElementById('sn-h').textContent = S.hero.length;
+}
+
+function renderGrid(sec) {
+  const g = document.getElementById('grid-' + sec);
+  g.innerHTML = '';
+  S[sec].forEach(p => {
+    const bc = p.badge === 'Sale' ? 'sale' : p.badge === 'Popular' ? 'popular' : '';
+    const d = document.createElement('div');
+    d.className = 'prod-card';
+    d.innerHTML = `
+      ${p.badge ? `<div class="prod-badge ${bc}">${p.badge}</div>` : ''}
+      <img class="prod-img" src="${p.image}" alt="${p.name}" onerror="this.style.opacity=0;this.parentElement.style.background='var(--light)'">
+      <div class="prod-info">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-price">${p.price}</div>
+      </div>
+      <div class="prod-actions">
+        <button class="prod-btn" onclick="openEdit('${sec}',${p.id})">Edit</button>
+        <button class="prod-btn del" onclick="delProd('${sec}',${p.id})">Delete</button>
+      </div>`;
+    g.appendChild(d);
+  });
+  const a = document.createElement('div');
+  a.className = 'add-card';
+  a.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add Product</span>`;
+  a.onclick = () => openAdd(sec);
+  g.appendChild(a);
+}
+
+function renderHero() {
+  const g = document.getElementById('heroGrid');
+  g.innerHTML = '';
+  S.hero.forEach((img, i) => {
+    const d = document.createElement('div');
+    d.className = 'hero-card';
+    d.innerHTML = `
+      <img src="${img}" alt="${img}" onerror="this.style.opacity=0">
+      <div class="hero-card-overlay">
+        <button class="hero-del-btn" onclick="removeHero(${i})">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+        </button>
+      </div>
+      <div class="hero-fname">${img}</div>`;
+    g.appendChild(d);
+  });
+  const a = document.createElement('div');
+  a.className = 'hero-add-card';
+  a.innerHTML = `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add Image</span>`;
+  a.onclick = openHeroAdd;
+  g.appendChild(a);
+}
+
+function renderDash() {
+  const c = document.getElementById('dashSections');
+  const rows = [
+    { key:'womens',  label:"Women's", sub:'Nura Collection' },
+    { key:'mens',    label:"Men's",   sub:'House of All' },
+    { key:'couples', label:'Couples', sub:'Bloom Again Inclusive' },
+  ];
+  c.innerHTML = rows.map(r => `
+    <div class="dash-card">
+      <div class="dash-card-top">
+        <div class="dash-card-title">${r.label}</div>
+        <div class="dash-card-count">${S[r.key].length} items<br>${r.sub}</div>
+      </div>
+      <div class="dash-imgs">
+        ${S[r.key].slice(0,4).map(p => `<img class="dash-thumb" src="${p.image}" alt="${p.name}" onerror="this.style.opacity=0;this.style.background='var(--light)'">`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════ PRODUCT CRUD ═══════════
+function delProd(sec, id) {
+  if (!confirm('Delete this product?')) return;
+  S[sec] = S[sec].filter(p => p.id !== id);
+  renderGrid(sec); updateStats();
+  toast('Product deleted — click Save Changes to keep', 'ok');
+}
+
+function openAdd(sec) {
+  editSec = sec; editId = null;
+  document.getElementById('modalTitle').textContent = 'Add Product';
+  clearModal();
+  const brands = { womens:'Nura Collection', mens:'House of All', couples:'Bloom Again Inclusive' };
+  document.getElementById('fBrand').value = brands[sec] || '';
+  document.getElementById('prodModal').classList.add('on');
+}
+
+function openEdit(sec, id) {
+  editSec = sec; editId = id;
+  const p = S[sec].find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalTitle').textContent = 'Edit Product';
+  document.getElementById('fImg').value   = p.image;
+  document.getElementById('fName').value  = p.name;
+  document.getElementById('fPrice').value = p.price;
+  document.getElementById('fBrand').value = p.brand;
+  document.getElementById('fBadge').value = p.badge;
+  document.getElementById('imgPrev').src  = p.image;
+  document.querySelectorAll('.sz-btn').forEach(b => b.classList.toggle('on', p.sizes.includes(b.dataset.sz)));
+  document.getElementById('prodModal').classList.add('on');
+}
+
+function closeProdModal() { document.getElementById('prodModal').classList.remove('on'); }
+
+function clearModal() {
+  ['fImg','fName','fPrice','fBrand'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fBadge').value = '';
+  document.getElementById('imgPrev').src = '';
+  document.querySelectorAll('.sz-btn').forEach(b => b.classList.remove('on'));
+}
+
+function prevImg() {
+  document.getElementById('imgPrev').src = document.getElementById('fImg').value.trim();
+}
+
+function saveProd() {
+  const image = document.getElementById('fImg').value.trim();
+  const name  = document.getElementById('fName').value.trim();
+  const price = document.getElementById('fPrice').value.trim();
+  const brand = document.getElementById('fBrand').value.trim();
+  const badge = document.getElementById('fBadge').value;
+  const sizes = [...document.querySelectorAll('.sz-btn.on')].map(b => b.dataset.sz);
+  if (!name || !price) return toast('Name and price are required', 'err');
+  if (editId) {
+    const i = S[editSec].findIndex(p => p.id === editId);
+    if (i >= 0) S[editSec][i] = { id:editId, image, name, price, brand, badge, sizes };
+  } else {
+    S[editSec].push({ id: nextId(S[editSec]), image, name, price, brand, badge, sizes });
+  }
+  renderGrid(editSec); updateStats();
+  closeProdModal();
+  toast(editId ? 'Product updated' : 'Product added', 'ok');
+}
+
+document.querySelectorAll('.sz-btn').forEach(b => b.addEventListener('click', () => b.classList.toggle('on')));
+
+// ═══════════ HERO ═══════════
+function openHeroAdd() {
+  document.getElementById('heroFname').value = '';
+  document.getElementById('heroPrev').src = '';
+  document.getElementById('heroModal').classList.add('on');
+}
+function closeHeroModal() { document.getElementById('heroModal').classList.remove('on'); }
+function prevHeroImg() { document.getElementById('heroPrev').src = document.getElementById('heroFname').value.trim(); }
+
+function addHeroImg() {
+  const v = document.getElementById('heroFname').value.trim();
+  if (!v) return toast('Enter a filename', 'err');
+  if (S.hero.includes(v)) return toast('Already in slideshow', 'err');
+  S.hero.push(v); renderHero(); updateStats(); closeHeroModal();
+  toast('Added to slideshow', 'ok');
+}
+
+function removeHero(i) {
+  if (!confirm('Remove from slideshow?')) return;
+  S.hero.splice(i, 1); renderHero(); updateStats();
+  toast('Image removed', 'ok');
+}
+
+// ═══════════ TOAST ═══════════
+let tTimer;
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast on' + (type ? ' ' + type : '');
+  clearTimeout(tTimer);
+  tTimer = setTimeout(() => t.classList.remove('on'), 3000);
+}
+
+// Logout
+function logout() {
+  document.getElementById('adminApp').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPw').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// Close modals on backdrop click
+document.getElementById('prodModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeProdModal(); });
+document.getElementById('heroModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeHeroModal(); });
+</script>
+</body>
+</html>
